@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
@@ -38,5 +39,11 @@ class AppServiceProvider extends ServiceProvider
         if (! $this->app->routesAreCached()) {
             Passport::routes();
         }
+
+        $count = 0;
+        DB::listen(function ($query) use (&$count) {
+            $count++;
+            info('Count of queries ' . $count);
+        });
     }
 }

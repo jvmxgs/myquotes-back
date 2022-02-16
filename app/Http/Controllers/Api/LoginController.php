@@ -16,8 +16,7 @@ class LoginController extends ApiController
     public function __invoke(LoginRequest $request)
     {
         if (!auth()->attempt($request->validated())) {
-            return response(['error_message' => 'Incorrect Details.
-            Please try again']);
+            return $this->errorResponse('Invalid credentials!', null);
         }
 
         $token = auth()->user()->createToken('QuoteToken')->accessToken;

@@ -19,6 +19,7 @@ Route::post('login', LoginController::class);
 
 Route::middleware('auth:api')->group(function () {
   Route::resource('quotes', QuoteController::class);
+  Route::resource('user.quotes', UserQuoteController::class);
 });
 
 

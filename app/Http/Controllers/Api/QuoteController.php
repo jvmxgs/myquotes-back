@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\QuoteCollection;
 use App\Models\Quote;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,12 +14,12 @@ class QuoteController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $quotes = Quote::all();
+            $quotes = Quote::scope($request->scope)->paginate(15);
 
-            return $this->dataResponse('Quotes', $quotes);
+            return $this->dataResponse('Quotes', new QuoteCollection($quotes));
         } catch(Exception $e) {
             return $this->errorResponse('Error trying to get quotes', $e);
         }
