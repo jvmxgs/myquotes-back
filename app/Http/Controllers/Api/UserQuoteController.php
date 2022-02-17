@@ -88,7 +88,7 @@ class UserQuoteController extends ApiController
     {
         $content = '';
 
-        $quotes = Quote::all();
+        $quotes = Quote::userQuotes()->get();
         foreach ($quotes as $quote) {
             $content .= $quote->quote . PHP_EOL;
             $content .= '[Author]: ' . $quote->author . PHP_EOL;
