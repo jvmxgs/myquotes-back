@@ -30,4 +30,22 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'quote_garden' => [
+        'url' => env('QUOTE_GARDEN_URL'),
+        'random_single_url' => env('QUOTE_GARDEN_RANDOM_SINGLE_URL')
+    ],
+
+    'quotes_on_design' => [
+        'url' => env('QUOTES_ON_DESIGN_URL')
+    ],
+
+    'stoic_quoute' => [
+        'url' => env('STOIC_QUOTE_URL'),
+        'random_single_url' => env('STOIC_QUOTE_RANDOM_SINGLE_URL')
+    ],
+
+    'zen_qoutes' => [
+        'url' => env('ZEN_QUOTES_URL'),
+        'random_single_url' => env('ZEN_QUOTES_RANDOM_SINGLE_URL')
+    ],
 ];

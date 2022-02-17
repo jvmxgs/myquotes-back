@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\UserQuoteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('register', RegisterController::class);
+Route::post('login', LoginController::class);
+
+Route::middleware('auth:api')->group(function () {
+  Route::get('user/{user}/exportquotes', [UserQuoteController::class, 'export']);
+
+  Route::resource('quotes', QuoteController::class);
+  Route::resource('user.quotes', UserQuoteController::class);
+
 });
+
+
