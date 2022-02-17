@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\SaveDailyQuouteOfEachQuoteService;
 use App\Models\Quote;
 use App\Services\QuoteService;
 use Illuminate\Console\Command;
@@ -39,22 +40,6 @@ class GetQuotes extends Command
      */
     public function handle()
     {
-        $quoteService = new QuoteService();
-
-        $quotes = $quoteService->getRandomQuoteOfEachService();
-
-        $quotes = $this->addTimeStamps($quotes);
-
-        Quote::insert($quotes);
-    }
-
-    private function addTimeStamps($quotes)
-    {
-        return collect($quotes)->map(function ($quote) {
-            $quote['created_at'] = now();
-            $quote['updated_at'] = now();
-
-            return $quote;
-        })->toArray();
+        SaveDailyQuouteOfEachQuoteService::dispatch();
     }
 }

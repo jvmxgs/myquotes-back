@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterStoreRequest extends FormRequest
+class UserQuoteDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,6 +16,11 @@ class RegisterStoreRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        $this->merge(['quote' => $this->route('quote')]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,10 +29,7 @@ class RegisterStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
-            'username' => 'required|unique:users,username',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed'
+            'quote' => 'required|exists:quotes,id'
         ];
     }
 }
