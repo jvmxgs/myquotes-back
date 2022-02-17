@@ -39,13 +39,38 @@ class Quote extends Model
             case 'daily':
                 $query->daily();
             break;
+            case 'allExceptToday':
+                $query->allExceptToday();
+            break;
+            case 'userQuotes':
+                $query->userQuotes();
+            break;
         }
     }
 
     public function scopeDaily($query)
     {
-        $query->select('id', 'author', 'quote')
-            ->with('users')
+        $query->withUser()
             ->whereDate('created_at', Carbon::today());
+    }
+
+    public function scopeAllExceptToday($query)
+    {
+        $query->withUser()
+            ->whereDate('created_at', '<', Carbon::today());
+    }
+
+    public function scopeUserQuotes($query)
+    {
+        $query->withUser()
+            ->whereHas('users', function ($q) {
+                $q->where('user_id', auth()->user()->id);
+            });
+    }
+
+    public function scopeWithUser($query)
+    {
+        $query->select('id', 'author', 'quote')
+            ->with('users');
     }
 }

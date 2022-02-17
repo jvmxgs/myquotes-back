@@ -16,13 +16,13 @@ class QuoteController extends ApiController
      */
     public function index(Request $request)
     {
-        try {
+        // try {
             $quotes = Quote::scope($request->scope)->paginate(15);
 
             return $this->dataResponse('Quotes', new QuoteCollection($quotes));
-        } catch(Exception $e) {
+        /* } catch(Exception $e) {
             return $this->errorResponse('Error trying to get quotes', $e);
-        }
+        } */
     }
 
     /**

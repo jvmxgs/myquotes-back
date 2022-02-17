@@ -36,7 +36,7 @@ class UserQuoteController extends ApiController
     public function store(User $user, UserQuoteStoreRequest $request)
     {
         try {
-            $user->quotes()->sync($request->quote_id);
+            $user->quotes()->attach($request->quote_id);
 
             return $this->successResponse('Quote saved');
         } catch(Exception $e) {
@@ -76,7 +76,7 @@ class UserQuoteController extends ApiController
     public function destroy(User $user, UserQuoteDeleteRequest $request)
     {
         try {
-            $user->quotes()->updateExistingPivot($request->quote_id, ['deleted_at' => now()]);
+            $user->quotes()->updateExistingPivot($request->quote, ['deleted_at' => now()]);
 
             return $this->successResponse('Quote deleted');
         } catch(Exception $e) {
@@ -86,34 +86,16 @@ class UserQuoteController extends ApiController
 
     public function export()
     {
-        $fileName = 'quotes.txt';
-        $pines = Quote::all();
+        $content = '';
 
-        $headers = array(
-            "Content-type"        => "text/plain",
-            "Content-Disposition" => "attachment; filename=$fileName",
-            "Pragma"              => "no-cache",
-            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
-            "Expires"             => "0"
-        );
+        $quotes = Quote::all();
+        foreach ($quotes as $quote) {
+            $content .= $quote->quote . PHP_EOL;
+            $content .= '[Author]: ' . $quote->author . PHP_EOL;
+            $content .= PHP_EOL;
+        }
 
-        $columns = array('pin', 'tiempo');
-
-        $callback = function() use($pines, $columns) {
-            $file = fopen('php://output', 'w');
-            fputcsv($file, $columns);
-
-            foreach ($pines as $pin) {
-                $row['pin']  = $pin->pin;
-                $row['comment']    = $pin->comment;
-
-                fputcsv($file, array($row['pin'], $row['comment']));
-            }
-
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
+        return $this->dataResponse('your data', $content);
     }
 }
 

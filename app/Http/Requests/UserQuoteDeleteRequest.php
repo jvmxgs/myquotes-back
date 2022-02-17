@@ -16,6 +16,11 @@ class UserQuoteDeleteRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        $this->merge(['quote' => $this->route('quote')]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,7 +29,7 @@ class UserQuoteDeleteRequest extends FormRequest
     public function rules()
     {
         return [
-            'quote_id' => 'required|exists:quotes,id'
+            'quote' => 'required|exists:quotes,id'
         ];
     }
 }
