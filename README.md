@@ -20,4 +20,8 @@ php artisan db:seed
 
 php artisan serve
 
+php artisan schedule:work
+
+php artisan queue:work
+
 ```
